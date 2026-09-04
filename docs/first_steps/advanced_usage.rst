@@ -140,12 +140,12 @@ col4 could be coming from `bar`, `baz` or `quux`. Without metadata, this is the 
 User can optionally provide the metadata information to sqllineage to improve the lineage result.
 
 Suppose all the tables are created in sqlite database with a file called `db.db`. In particular,
-table `quux` has columns `col5` and `col6` and `baz` has column `col4`.
+tables `baz` and `quux` are created with the following schema:
 
 .. code-block:: bash
 
     sqlite3 db.db 'CREATE TABLE IF NOT EXISTS baz (bar_id int, col1 int, col4 int)';
-    sqlite3 db.db 'CREATE TABLE IF NOT EXISTS quux (col5 int, col6 int)';
+    sqlite3 db.db 'CREATE TABLE IF NOT EXISTS quux (quux_id int, col5 int, col6 int)';
 
 Now given the same SQL, column lineage is fully resolved.
 
@@ -159,6 +159,7 @@ Now given the same SQL, column lineage is fully resolved.
     main.foo.col4 <- main.baz.col4
     main.foo.col5 <- main.quux.col5
     main.foo.col6 <- main.quux.col6
+    main.foo.quux_id <- main.quux.quux_id
 
 The default schema name in sqlite is called `main`, we have to specify here because the tables in SQL file are unqualified.
 
